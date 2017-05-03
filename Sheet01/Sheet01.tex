@@ -1,0 +1,156 @@
+\documentclass[a4paper]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{enumitem}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\df}{\mathrm{d}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.75em}
+
+\begin{document}
+
+\section*{Exercise 1}
+\subsection*{Exercise 1.1}
+
+Recall:
+\[\mathbb Z_N = \{\overline 0, \overline 1, \hdots, \overline{N-1}\}\]
+e.g.
+\[\mathbb Z_7 = \{\overline 0, \overline 1, \overline 2, \overline 3, \overline 4,
+\overline 5, \overline 6 \}\]
+
+$\mathbb Z_N^\ast$ is the set of invertible elements in $\mathbb Z_N$:
+\[\mathbb Z_N^\ast = \{a\in\mathbb Z_N:\exists b\in\mathbb Z_N: a\cdot b=1\}\]
+e.g. for $N = 26$, $\overline 3\cdot \overline 9 = \overline 27=\overline 1$, so $3$ and $7$
+are in $\mathbb Z_{26}^*$.
+
+Instead of finding inverses for all elements of $\mathbb Z_N$, we can use the euler function
+$\varphi(N)$:
+\[\left|Z_{26}^*\right|\;=\;\left|\left\{a\in\mathbb Z_N:
+    \gcd(a,N)=1\right\}\right|\;=\;\varphi(N)\]
+
+\textbf{Definition} (Euler Function)\begin{itemize}
+    \item If $N=p$, $p$ prime: $\varphi(p) = p-1$
+    \item If $N=p^k$, $p$ prime: $\varphi(N) = p^k-p^{k-1}=p^k\left(1-\frac 1 p\right)$
+    \item If $N=\prod_{i=1}^k p_i^{\alpha_i}$, $p_i$ prime:
+        $\varphi(N)=N\prod_{i=1}^k\left(1-\frac 1 {p_i}\right)$
+    \item If $N=p\cdot q$: $\varphi(N)=\varphi(p)\cdot\varphi(q)$
+\end{itemize}
+
+e.g.
+\begin{eqnarray*}
+    \varphi(7) &=& 7-1 = 6 = |\mathbb Z_7^*|\\
+    \varphi(25) &=& 5^2-5 = 25- 5 = 20 = |\mathbb Z_{25}^*|\\
+    \varphi(26) &=& \varphi(2\cdot 13) = \varphi(2)\cdot\varphi(13) (2- 1)\cdot(13-1) = 12 = |\mathbb Z_{25}^*|\\
+\end{eqnarray*}
+
+\subsection*{Exercise 1.2}
+\[A=\begin{pmatrix}a&c\\b&d\end{pmatrix}\qquad \det(A)=ad-bc\]
+    $A$ is invertible iff $\det(A) \neq 0$, i.e. the columns of $A$ are linearly independent:
+For the columns
+    \[C_1=\begin{pmatrix}a\\b\end{pmatrix}\qquad C_2=\begin{pmatrix}c\\d\end{pmatrix}\]
+are independent, which means that there is no $\lambda$ such that $C_1 =\lambda C_2$.
+
+We need to remove $C_2 = 0$ since it's always linearly dependent, so there are $p^2 - 1$ choices for $C_2$.
+For $C_1$, we can choose one component freely and have one choice less for the second component as to avoid
+linear dependence: There are $p^2-p$ choices.
+
+\[\left|GL_2(\mathbb Z_p)\right|\;=\;(p^2-1)(p^2-p)\]
+
+\subsection*{Exercise 1.3}
+
+``$\Rightarrow$'' Suppose that $A\in\mathbb Z_N^{k\times k}$ is invertible. Show that $\det(A)\in\mathbb Z_N^*$.
+
+If $A$ is invertible, there exists $B\in\mathbb Z_N^{k\times k}$ such that $A\cdot B = I$.
+TODO
+
+``$\Leftarrow$'' Suppose that $A\in\mathbb Z_N^{k\times k}$ such that $\det(A)\in\mathbb Z_N^*$.
+\[\det(A)\in\mathbb Z_N^{k\times k}\;\Rightarrow\;\exists b\in\mathbb Z_N: \det(A)\cdot b=1\]
+\[\exists M\in\mathbb Z_N^{k\times k}: \det(M) = b\]
+\[\det(A)\cdot\det(M)\;=\;1\;=\;\det(I)\]
+??? Instead prove indirectly by contradiction.
+
+\subsection*{Exercise 1.4}
+
+$|GL_2(\mathbb Z_{26})| = ?$ 
+
+
+$\mathbb Z_{26}$ is isomorph to $\mathbb Z_2\times\mathbb Z_{13}$
+\begin{eqnarray*}
+    \mathbb Z_{26} &\approxeq& \mathbb Z_2\times\mathbb Z_{13}\\
+    GL_2(\mathbb Z_{26}) &\approxeq& GL_2(\mathbb Z_2\times \mathbb Z_{13})
+        \;\approxeq\;GL_2(\mathbb Z_2)\times GL_2(\mathbb Z_{13})\\
+    |GL_2(\mathbb Z_{26})| &=& |GL_2(\mathbb Z_2)|\cdot|GL_2(\mathbb Z_{13})|
+        \;=\;(2^2-1)(2^2-2)\cdot(13^2-1)(13^2-13)
+\end{eqnarray*}
+
+\section*{Exercise 2}
+
+$M = \mathrm{NOMOREWAR}$
+
+\subsection*{Exercise 2.1}
+
+Affine map $f: \mathbb Z_{26}\rightarrow\mathbb Z_{26},\; x\mapsto\overline ax+\overline b$
+
+\begin{itemize}
+    \item N $=13$, $f(13) = \overline 7\cdot 13+\overline 5=\overline {96} = \overline{18}$, $18 \equiv $ S
+    \item O $=14$, $\hdots$
+\end{itemize}
+
+Gives the ciphertext $T=$ YFRFANJLA.
+
+\subsection*{Exercise 2.2}
+
+\textbf{Encryption:} $g:\mathbb Z_{26}^2\rightarrow\mathbb Z_{26}^2,\; X\mapsto AX+B$.
+
+\[X_1 = \begin{pmatrix}N\\O\end{pmatrix}=\begin{pmatrix}13\\14\end{pmatrix}\]
+    \[f(X_1)=\begin{pmatrix}5&2\\1&1\end{pmatrix}\begin{pmatrix}13\\14\end{pmatrix}
+        + \begin{pmatrix}3\\7\end{pmatrix}
+            = \begin{pmatrix}\overline{5\cdot 13+2\cdot 14+3}\\\overline{1\cdot 13+1\cdot 14+7}\end{pmatrix}
+                = \begin{pmatrix}\overline{18}\overline 7\end{pmatrix}
+                    = \begin{pmatrix}\mathrm S\\\mathrm I\end{pmatrix}\]
+
+If the length of $M$ is not divisible by $2$, pad the string with additional letters (e.g. NOMOREWARR)
+
+Ciphertext $T=$ SINHSCJDSP.
+\vspace{1em}
+
+\textbf{Decryption:} $g^{-1}: \mathbb Z_{26}^2\rightarrow\mathbb Z_{26}^2,\; X\mapsto A^{-1}(X-B)$
+
+\subsection*{Exercise 2.3}
+Find $a, b$ such that $f(6) = 23$ and $f(15)=24$.
+
+\[\left\{\begin{matrix}6a+b=23\\15a+b=24\end{matrix}\right.\;\Rightarrow\;a=3,b=5\]
+
+
+\section*{Exercise 3}
+\subsection*{Exercise 3i)}
+
+\begin{samepage}
+\textbf{Existance:} Suppose $\gcd(a-1, N)=1$ exists.\begin{eqnarray*}
+    m = am+b &\Rightarrow& am-m+b = 0\\
+    &\Rightarrow& (a-1)m+b=0\\
+    &\Rightarrow& (a-1) m = -b\\
+    &\Rightarrow& m = -b(a-1)^{-1}\\
+\end{eqnarray*}
+$m$ exists since $(a-1)^{-1}$ exists.
+\end{samepage}
+
+\textbf{Uniqueness:} ???
+
+\subsection*{Exercise 3ii)}
+
+Suppose $\gcd(m_1-m_2,N)=1$.
+\[\left\{\begin{matrix}f(m_1)=c=1\\f(m_2)=c_2\end{matrix}\right.
+    \;\Rightarrow\;\left\{\begin{matrix}am_1+b=c_1\quad (l_1)\\am_2+b=c_2\quad (l_1)\end{matrix}\right.\]
+
+        $(l_1)-(l_2)$ gives $(m_1-m_2)a=c_1-c_2$ since $(m_1-m_2)$ exists (because $\gcd(m_1-m_2,N)=1$)
+
+        We have: $a=(c_1-c_2)(m_1-m_2)^{-1}$ and $b=c_1-am_1$
+
+\end{document}
+
