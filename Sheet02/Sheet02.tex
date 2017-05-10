@@ -1,0 +1,116 @@
+\documentclass[a4paper]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{enumitem}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand\ol\overline
+\newcommand\Z{\mathbb Z}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\df}{\mathrm{d}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.75em}
+
+\begin{document}
+
+\section*{Exercise 1}
+
+\begin{enumerate}[label=\alph*)]
+    \item Addition modulo 26.
+        \[f:\Z_{26}\rightarrow\Z_{26},\;f_a(\omega)=\omega+a,\;a\in\Z_{26}\]
+    \item\[c = m+3\; (\mathrm{mod}\; 26)\]
+    \item \begin{flushleft}
+            $m=$ \texttt{ZH KDYH WR ILQLVK IRXU DVVLJQPHQWV RQOB LQ RQH ZHHNHQG WKDW LV
+WRR PXFK IRU RQH SHUVRQ SOHDVH FRPH WR WKH OLEUDUB DQG OHW XV GR
+        LW WRJHWKHU VLQFH ZH DUH LQ WKH VDPH JURXS}
+    \end{flushleft}
+    \item \begin{flushleft}
+        $c=$ \texttt{I AM SO SORRY DEAR ROJI I NEED TO ENJOY MY WEEKEND I AM ENJOYING THE
+        SUMMER AT MUNICH WITH FLORIAN AND SEVEN OTHER FRIENDS IT WOULD BE NICE IF YOU JOIN
+        US WE CAN DO ALL THE EXERCISE SHEETS ON THURSDAY EVENING SEE YOU SOON}
+    \end{flushleft}
+\end{enumerate}
+
+\section*{Exercise 2}
+
+English letters descending by frequency: \texttt{etaoinshrdlcumwfgypbvkjxqz}
+
+\begin{enumerate}
+    \item Assign the first few letters according to frequency.
+    \item Swap letters in the translation map with ones of similar frequency if the result
+        is unsound (e.g. \texttt{ta} $\rightarrow$ \texttt{to})
+    \item Repeat until the message is decrypted.
+\end{enumerate}
+
+\section*{Exercise 3}
+
+Read $a\mid b$ as ``$a$ divides $b$''.
+
+\begin{itemize}
+    \item \textbf{Reflexivity:} For $x\in\Z$, $N\mid x-x$ since $N\mid 0$ for any $N$.
+    \item \textbf{Symmetry:} $x\sim_N y \Rightarrow N\mid x-y\Rightarrow\exists k\in\Z: x-y=k\cdot N
+        \Rightarrow x-y=N\cdot(-k)\Rightarrow N\mid y-x\Rightarrow y\sim_N x$
+    \item \textbf{Transitivity:} For $x\sim_N y$ and $x\sim_N z$, it holds that $x\sim_N z$:
+        \[\left.\begin{array}{c}x\sim_N y\Rightarrow N\mid x-y\\
+                y\sim_N z\Rightarrow N\mid y-z\end{array}\right\}\Rightarrow
+            \left\{\begin{array}{c}\exists k_1\in\Z:x-y=N\cdot k_1\\
+            \exists k_2\in\Z:y-z=N\cdot k_2\end{array}\right.\]
+        \[x-y+y-z=N k_1 + N k_2\;\Rightarrow\;x-z=N(k_1+k_2)\;\Rightarrow
+        \;N\mid x-z\;\Rightarrow\;x\sim_N z\]
+\end{itemize}
+
+\section*{Exercise 4}
+
+\begin{enumerate}[label=\alph*)]
+    \item $4536782793\;\mathrm{mod}\;9784537=6542162$
+    \item \label{4b} ...
+    \item Use the program from \ref{4b} to calculate
+        \[\gcd(16534528044, 8332745927)=(43, 81440996, -161602003)\]
+        The second and third coefficient are called $x$ and $y$, such that
+        $\gcd(a,b)=x\cdot a+y\cdot b$
+    \item $\det n\geq 2$. We want to show that \[n=\prod_{i=1}^kp_i^{\alpha_i}\] and $n$ is unique.
+        \begin{itemize}
+            \item For $n=2$, $n$ is a prime.
+            \item For $n > 2$:
+                \begin{enumerate}[label=(\roman*)]
+                    \item If $n=p$ where p is a prime
+                    \item If $n$ is not a prime and $\ast$ is true for some $2\leq m<n$.
+
+                        Since $n$ is not prime, $n$ is compsite, i.e. $n=m_1\cdot m_2$ with
+                        $2\leq m_1<n$ and $2\leq m_2<n$.
+
+                        Since $m_1 <n$ and $m_2<n$, by induction hypothesis, we have
+                        \[m_1=\prod_{i=1}^{k_1}p_i^{\alpha_i},\quad
+                            m_2=\prod_{j=1}^{k_2}q_j^{\beta j}\]
+
+                        $p_i, p_j$ prime. Thus \[n=\prod_{l=1}^tp_e^{\gamma_l}\]
+                \end{enumerate}
+
+            $n$ is uniquely decomposed: Suppose\[n=\prod_{i=1}^kp_i^{\alpha_i},\quad
+                n=\prod_{j=1}^lq_j^{\beta_j}\]
+            We find that $q_1=p_1$.
+        \end{itemize}
+\end{enumerate}
+
+\section*{Exercise 4}
+
+Recall: $f:A\rightarrow B$, $f$ is called \textit{injective} iff $f(a)=f(b)\;\Rightarrow\; a_1=a_2$.
+
+\begin{enumerate}
+    \item \begin{eqnarray*}
+            f_1(a)=f_1(b) &\Rightarrow& \ol 5 a + \ol 7 = \ol 5 b + \ol 7\\
+            &\Rightarrow& \ol 5 a = \ol 5 b \\
+            &\Rightarrow& a = \ol 5\cdot \ol 5^{-1} b \\
+            &\Rightarrow& a = \ol 5\cdot\ol 5 b = 1 b = b
+        \end{eqnarray*}
+            since $\ol 5^{-1} = \ol 5$, so $f_1$ is injective.
+        $f_2(\ol 1) = \ol 7 = f_2(\ol 7)$, but $\ol 1 \neq \ol 7$, so $f_2$ is not injective
+
+    \item $c=$ \texttt{CUEMBSU LB OPWWT}
+\end{enumerate}
+
+\end{document}
+
