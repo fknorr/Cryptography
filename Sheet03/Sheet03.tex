@@ -1,0 +1,152 @@
+\documentclass[a4paper]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{enumitem}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand\ol\overline
+\newcommand\Z{\mathbb Z}
+\newcommand\F{\mathbb F}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\df}{\mathrm{d}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.75em}
+\renewcommand*{\arraystretch}{1.5}
+
+\begin{document}
+
+\section*{Exercise 1}
+
+$\F_4 \;=\; \F_{2^2} \;=\; \F_2[x]/\langle x^2+x+1 \rangle \;=\; \{ f\in\F_2[x]:f\;=\;a_0+a_1x\}
+        \;=\; \{0,1,x,1+x\}$
+
+\vspace*{1em}
+\textbf{Addition:}
+
+\hspace*{1cm}\begin{tabular}{c||c|c|c|c}
+    +  & $0$ & $1$ & $x$ & $x+1$ \\
+    \hline
+    \hline
+    $0$ & $0$ & $1$ & $x$ & $x+1$ \\
+    \hline
+    $1$ & $1$ & $0$ & $x+1$ & $x$ \\
+    \hline
+    $x$ & $x$ & $x+1$ & $0$ & $1$ \\
+    \hline
+    $x+1$ & $x+1$ & $x$ & $1$ & $0$ \\
+\end{tabular}
+
+with
+\[x+x \;=\; x\underbrace{(1+1)}_{=\;0} \;=\; 0\]
+\[x+x+1 \;=\; (x+x)+1 \;=\; 0+1 \;=\; 1\]
+
+\vspace*{1.5em}
+\textbf{Multiplication:}
+
+\hspace*{1cm}\begin{tabular}{c||c|c|c|c}
+    $\cdot$  & \hspace*{0.9em}$0$\hspace*{0.9em} & $1$ & $x$ & $x+1$ \\
+    \hline
+    \hline
+    $0$ & $0$ & $0$ & $0$ & $0$ \\
+    \hline
+    $1$ & $0$ & $1$ & $x$ & $x+1$ \\
+    \hline
+    $x$ & $0$ & $x$ & $x+1$ & $1$ \\
+    \hline
+    $x+1$ & $0$ & $x+1$ & $1$ & $x$ \\
+\end{tabular}
+
+with
+\[x(x+1) \;=\; x^2+x \;=\; \underbrace{(x+1)}_{\;=\;x^2}+x \;=\; 1\]
+\[(x+1)(x+1) \;=\; (x+1)^2 \;=\; x^2+\underbrace{2x}_{\;=\;0} + 1 \;=\; x^2+1 \;=\; (x+1)+1 \;=\; x\]
+
+\textbf{Recall:} $\varphi:(A,\cdot,+) \rightarrow (B,\odot,\oplus)$ is an isomorphism if
+\begin{enumerate}[label=(\roman*)]
+    \item $\varphi$ is a homomorphism:
+        \begin{itemize}
+            \item $\varphi(1_A) = 1_B$
+            \item $\forall a_1, a_2\in A: \varphi(a_1+a_2) = \varphi(a_1)\oplus\varphi(a_2)
+                    \wedge \varphi(a_1\cdot a_2) = \varphi(a_1)\odot\varphi(a_2)$
+        \end{itemize}
+    \item $\varphi$ is bijective
+\end{enumerate}
+
+\begin{eqnarray*}
+    \varphi: \Z_4 &\rightarrow& \F_4\\
+    0 &\mapsto& \varphi(0)\;=\;0\\
+    1 &\mapsto& \varphi(1)\;=\;1\\
+    2 &\mapsto& \varphi(2)\;=\;x\\
+    3 &\mapsto& \varphi(3)\;=\;x+1
+\end{eqnarray*}
+
+For $a_1=2$ and $a_2=2$, we have
+\[\varphi(a_1\cdot a_2) \;=\; \varphi(2\cdot 2) \;=\; \varphi(4) \;=\; \varphi(0) \;=\; 0\]
+\[\varphi(a_1)\cdot\varphi(a_2)\;=\;\varphi(2)\cdot\varphi(2)\;=\;x\cdot x\;=\;x^2\;=\;x+1\]
+
+For $a_1=1$ and $a_2=3$:
+\[\varphi(a_1+a_2)\;=\;\varphi(1+3)\;=\;\varphi(4)\;=\;\varphi(0)\;=\;0\]
+\[\varphi(a_1)+\varphi(a_2)\;=\;\varphi(1)+\varphi(3)\;=\;1+x+1\;=\;x\]
+\[0\,\neq\, x \;\Rightarrow\; \varphi(1+3)\,\neq\,\varphi(1)+\varphi(3)\]
+
+\vspace*{1em}
+\textbf{Addition:}
+
+\hspace*{1cm}\begin{tabular}{c||c|c|c|c}
+    +  & $0$ & $1$ & $2$ & $3$ \\
+    \hline
+    \hline
+    $0$ & $0$ & $1$ & $2$ & $3$ \\
+    \hline
+    $1$ & $1$ & $2$ & $3$ & $0$ \\
+    \hline
+    $2$ & $2$ & $3$ & $0$ & $1$ \\
+    \hline
+    $3$ & $3$ & $0$ & $1$ & $2$ \\
+\end{tabular}
+
+\section*{Exercise 2}
+
+\begin{eqnarray*}
+\varphi(31)&=&31\left(1-\frac{1}{31}\right)\;=\;31-\frac{31}{31} \;=\; 30\\
+\varphi(15)&=&\varphi(3\cdot5)\;=\;\varphi(3)\cdot\varphi(5)\;=\;
+        3\left(1-\frac 1 3\right)\cdot 5\left(1-\frac 1 5\right)\;=\;8\\
+    \varphi(16) &=& \varphi(2^4) = 2^4-2^3=8\\[0.3em]
+    \varphi(49) &=& \varphi(7^2)=7^2-7^1=42\\[0.3em]
+    \varphi(22785) &=& \varphi(5\cdot3\cdot7^2\cdot31)=4\cdot2\cdot42\cdot30=10080\\
+\end{eqnarray*}
+since with prime $p$ it holds
+\begin{eqnarray*}
+    \varphi(p^\alpha)&=&p^\alpha\cdot\left(1-\frac 1 p\right)=p^\alpha\left(\frac{p-1}p\right)\\
+    &=& p^\alpha\cdot p^{-1}\cdot (p-1)\\
+    &=& p^{\alpha-1}\cdot (p-1)=p^{\alpha}-p^{\alpha-1}
+\end{eqnarray*}
+
+
+\textbf{Hints:}\begin{itemize}
+    \item If $N\;=\;p$ and $p$ is prime, $\varphi(p)\;=\;\left|\left\{a\in\Z_p:\gcd(a,p)\;=\;1\right\}\right|\;=\;|\Z_p^*|\;=\;p-1$
+        \[p\cdot\prod_{i=1}^1\left(1-\frac 1 p\right)\;=\;p-1\]
+    \item $N\;=\;p^\alpha$ ?
+    \item $N=\prod_{i=1}^k p_i^{\alpha_i}$ ?
+\end{itemize}
+
+
+\section*{Exercise 3}
+
+\begin{center}
+    \renewcommand*{\arraystretch}{1}
+    \begin{tabular}{ccccccccccccc}
+        $m$&=&N&O&P&U&B&L&I&C&K&E&Y\\
+        $x$&=&13&14&15&20&1&11&8&2&10&4&24\\
+        $f_1(x)$&=&43&46&49&64&7&37&28&10&34&16&76\\
+        &&R&U&X&M&H&L&C&K&I&Q&Y\\
+        &&N&O&T&N&O&T&N&O&T&N&O\\
+        $f_2(f_1(x))$&=&E&I&Q&Z&V&E&P&Y&B&D&M
+    \end{tabular}
+\end{center}
+
+
+\end{document}
+
