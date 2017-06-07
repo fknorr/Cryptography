@@ -1,0 +1,170 @@
+\documentclass[a4paper]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{listings}
+\usepackage{enumitem}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand\ol\overline
+\newcommand\N{\mathbb N}
+\newcommand\Z{\mathbb Z}
+\newcommand\F{\mathbb F}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\df}{\mathrm{d}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.75em}
+\renewcommand*{\arraystretch}{1.0}
+\lstset{basicstyle=\ttfamily,breaklines=true}
+
+\begin{document}
+
+\section*{Exercise 1}
+
+$p$ is a prime, fix $g\in\F_p^\ast$:
+\[f:(\Z_{p-1},+)\rightarrow(\F_p^\ast,\cdot),\;x\mapsto f(x)=g^x\]
+
+\subsection*{Exercise 1.1}
+Show that $f$ is a group homomorphism.
+
+For $x,y\in\Z_{p-1}$:
+\[f(x+y)=g^{x+y}=g^x\cdot g^y=f(x)\cdot f(y)\]
+
+\subsection*{Exercise 1.2}
+    $f$ is bijective $\Leftrightarrow\;\langle g\rangle=\F^\ast_p$.
+
+$g$ is a generator of $\F_p^\ast$ if 
+\[\F_p^\ast=\langle g\rangle:=\{g^i\mid i\in\{0,\hdots,p-1\}\}\]
+
+``$\Rightarrow$'': $f$ si bijective, which means that 
+$\forall y\in\F_p^\ast\exists!x\in\Z_p:y=g^x$, so by pluggin all elements from $\Z_p$ in to
+$f$ we can generate all elements in $\F_p^\ast$. Therefore $g$ is a generator.
+
+``$\Leftarrow$'' $\F_p^\ast=\{g^i\mid i\in\{0,\hdots,p-1\}\}$. Now we show that $f$ is bijective.
+In our case, $f$ bijective $\Leftrightarrow f$ surjective $\Leftrightarrow f$ injective.
+
+By looking at the definition of $f(i)=g^i$ and the definition of $\langle g\rangle$ we
+immedialtely see that $f$ is surjective.
+
+
+\section*{Exercise 2}
+\subsection*{Exercise 2.1}
+\texttt{checkPrime($n$)}\\
+Input: an integer $n$\\
+Output: \texttt{TRUE} if n is a prime or \texttt{FALSE} otherwise.
+
+\begin{lstlisting}
+If n == 1 Then Return FALSE
+ElIf n == 2 Then Return TRUE
+Else
+    f = Floor(Sqrt(n))
+    For k=2 To f Do
+        If n Mod k == 0 Then
+            Return FALSE
+        EndIf
+    EndFor
+    Return True
+EndIf
+\end{lstlisting}
+
+\subsection*{Exercise 2.2}
+
+Prime numbers $< 100$: 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67,
+71, 73, 79, 83, 89, 97
+
+\subsection*{Exercise 2.3}
+
+\texttt{randomPrime()}\\
+Input: -\\
+Output: a prime number
+
+\begin{lstlisting}
+Repeat
+    n = Random(100000)
+    t = checkPrime(n)
+Until t == TRUE
+Return n
+\end{lstlisting}
+
+
+\section*{Exercise 3}
+
+\subsection*{Exercise 3a)}
+
+Dominant terms and big-O notaion.
+
+\begin{enumerate}
+    \item \(f_1=10^3n+5+0.0001n^3\):
+        \[\lim_{n\rightarrow\infty}\frac{f_1}{n^3}\;=\;\lim_{n\rightarrow\infty}\frac{10^3n+5+0.0001n^3}{n^3}
+        \;=\;\lim_{n\rightarrow\infty}\frac{10^3}{n^2}+\frac 5{n^3}+0.0001\;=\;0.0001\]
+        $f\in\mathcal O(n^3)$ since the dominant term is $0.0001n^3$.
+
+    \item \(f_2=30n+5n^{1.5}+2.5n^{1.71}\):
+
+        By the same reasoning, $f\in\mathcal O(n^{1.71})$ by the dominant term $2.5n^{1.71}$.
+
+    \item  \(f_3\in\mathcal O(n^2\log n)\)
+    \item  \(f_4\in\mathcal O(n\log n)\)
+    \item  \(f_5\in\mathcal O(\log n)\)
+\end{enumerate}
+
+\subsection*{Exercise 3b)}
+
+\begin{enumerate}[label=(\roman*)]
+    \item $g_1\in\mathcal O(g_2),\,g_2\in\mathcal O(g_3)$. Is $g_1\in\mathcal O(g_3)$?
+        \[\forall n\in\N:\exists c>0:g_1(n)\leq c\cdot g_2(n)\]
+        \[\forall n\in\N:\exists \tilde c>0:g_2(n)\leq \tilde c\cdot g_3(n)\]
+        So we can concludde that
+        \[\forall n\in\N:g_1(n)\leq c\cdot g_2(n)\leq c\cdot\tilde c\cdot g_3(n)\]
+        Therefore $g_1\in\mathcal O(g_3)$.
+
+    \item $g=5n+8n^2+0.1n^3\in\mathcal O(n^4)$?
+        \[\lim_{n\rightarrow\infty}\frac{5n+8n^2+0.1n^3}{n^4}\;=\;0\]
+        Therefore $g\in\mathcal O(n^4)$.
+
+    \item $g=5n+8n^2+0.1n^3\in\mathcal o(n^3)$:
+        \[\lim_{n\rightarrow\infty}\frac g{n^3}\;=\;0.1\;\neq\;0\]
+        So $g\not\in\mathcal o(n^3)$.
+
+    \item $g=5n+8n^2+0.1n^3\in\mathcal O(n^2\log n)$?
+        \[\lim_{n\rightarrow\infty}\frac{n^3}{n^2\log n}\;=\;\lim_{n\rightarrow\infty}\frac n{\log n}
+            \;=\;\lim_{n\rightarrow\infty} \frac 1{\frac 1 n}\;=\;\lim_{n\rightarrow\infty}n=\infty\]
+        So $g\not\in\mathcal O(n^2\log n)$.
+\end{enumerate}
+
+
+\section*{Exercise 4}
+
+Solve\[S_1:\left\{\begin{array}{c}x=3\mod 7\\x=7\mod 15\\x=9\mod 11\end{array}\right.\]
+
+Chinese Remainder Theorem:
+\[\gcd(7,15)=\gcd(7,11)=\gcd(15,11)=1\]
+\[M=7\cdot15\cdot11\]
+\[M_1=\frac M 7=15\cdot 11\]
+\[M_2=\frac M {15}=7\cdot 11\]
+\[M_3=\frac M {11}=7\cdot 15\]
+
+\begin{eqnarray*}
+    \gcd(M_1,7)=1 &\Rightarrow& \exists u,v:M_1\cdot u + 7 \cdot v=1\\
+    &\Rightarrow& M_1\cdot u=1\mod 7\\
+    &\Rightarrow& u=M_1^{-1}\mod 7=2
+\end{eqnarray*}
+\begin{eqnarray*}
+    \gcd(M_2,15)=1 &\Rightarrow& \exists u_2:M_2\cdot u_2=1\mod 15\\
+    &\Rightarrow& u_2=8=M_2^{-1}\mod 15
+\end{eqnarray*}
+\begin{eqnarray*}
+    \gcd(M_3,11)=1 &\Rightarrow& \exists u_3:M_3\cdot u_3=1\mod 11\\
+    &\Rightarrow& u_3=2=M_3^{-1}\mod 11
+\end{eqnarray*}
+
+Therefore
+\[x=(3\cdot M_1\cdot u+7\cdot M_2\cdot u_2+9\cdot M_3\cdot u_3)\mod M\]
+Hence $x=262$.
+
+Likewise for $S_2$, $x=4959$.
+
+\end{document}
+
