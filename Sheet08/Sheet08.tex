@@ -1,0 +1,206 @@
+\documentclass[a4paper]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{enumitem}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand\ol\overline
+\newcommand\N{\mathbb N}
+\newcommand\Z{\mathbb Z}
+\newcommand\F{\mathbb F}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\sgn}{sgn}
+\newcommand{\df}{\mathrm{d}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.75em}
+\renewcommand*{\arraystretch}{1.5}
+
+\begin{document}
+
+\section*{Exercise 1}
+
+$p,q$ prime. Suppose $ed=1\mod\varphi(pq)$
+
+\textbf{To show:} $M^{ed}=M\mod pq$
+
+\textbf{Proof:} $M^{ed}\equiv M\mod p$, $M^{ed}\equiv M\mod q$. Use the Chinese Remainder Theorem.
+
+\begin{eqnarray*}
+    ed &=& 1 +\varphi(pq)k \\
+    M^{ed} &=& M^{1+\varphi(pq)k} \;=\; MM^{\varphi(pq)} \;=\; MM^{\varphi(p)\varphi(q)} \;=\;M\mod p\\ 
+    M^{\varphi(p)} &\equiv& 1\mod p
+\end{eqnarray*}
+
+Let $f:\Z_{pq}\rightarrow \Z_p\times\Z_q$ be the CRT map.
+
+\[f([M^{ed}]_{pq}) \;=\; f([M]_{pq})^{ed} \;=\;f([M]_p,[M]_q)^{ed}\]
+\[=\; f([M]_p^{ed}, [M]_q^{ed}) \;=\; f([M]_p, [M]_q) \;=\; f([M]_{pq})\]
+
+\section*{Exercise 2}
+
+Find $x$ such that $2^x=42\mod 101$ using teh Baby Step - Giant Step Algorithm.
+
+$n=100$, $m=\lceil\sqrt n\rceil = 10, \alpha=2$, $\{(j, 2^j)\mid|0\leq j\leq m\}$
+
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
+        $j$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
+        \hline
+        $\alpha^0$ & 1 & 2 & 4 & 8 & 16 & 32 & 64 & 27 & 63 & 7
+    \end{tabular}
+\end{center}
+
+$\Rightarrow t: 2^{-10}=2^{n-m}=2^{100-10}\equiv 65\mod 101$
+
+\begin{center}
+    \begin{tabular}{c|c|c|c|c|c|c|c|c|c|c}
+        $i$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 & 8 & 9\\
+        \hline
+        $\beta\cdot t^i$ & 42 & 3 & 94 & 50 & 18 & 59 & 98 & \textbf{7} & &
+    \end{tabular}
+\end{center}
+
+with $i=7$ and $j=9$ we have
+\[\log_2 42\;=\;i\cdot m+j\;=\;7\cdot 10+9\;=\;79\]
+
+\section*{Exercise 3}
+
+Using Pollars $\rho$-method, find $x$ such that $2^x\equiv 2\mod 53$.
+
+$\alpha=2, \beta=3, x_0=1, a_0=0, b_0=0$.
+
+\[x_{i+1} \;=\; \left\{\begin{array}{ll}
+        \beta x_i & ,x_i\in G_1\\
+        x_i^2 & ,x\in G_2\\
+        \alpha x_i & ,x\in G_3
+    \end{array}\right.\]
+\[(a_{i+1}, b_{i+1}) \;:=\;\left\{\begin{array}{ll}
+        (a_i, b_i+1) & ,x_i\in G_1\\
+        (2a_i, 2b_i) & ,x_i\in G_2\\
+        (a_i+1, b_i) & ,x_i\in G_3
+    \end{array}\right.\]
+Compute $x_i, a_i, b_i$ until \[x_i=x_{2i}\]
+
+$G_1=\{1,\hdots,15\}, G_2=\{16,\hdots,36\}, G_3=\{37,\hdots,52\}$
+
+\begin{center}
+    \begin{tabular}{cccc}
+        $i$ & $x_i$ & $a_i$ & $b_i$ \\
+        \hline
+        0 & 1 & 0 & 0 \\
+        1 & $3\cdot 1=3$ & 0 & 1\\
+        2 & $3\cdot 3=9$ & 0 & 2\\
+        3 & $9\cdot 3=27$ & 0 & 3\\
+        \textbf4 & $27^2\equiv 40$ & 0 & 6\\
+        5 & $2\cdot40\equiv27$ & 1 & 6\\
+        6 & $27^2\equiv40$ & 2 & 12\\
+        7 & $2\cdot40\equiv27$ & 3 & 12\\
+        \textbf8 & $27^2\equiv40$ & 6 & 24\\
+    \end{tabular}
+\end{center}
+
+\[\alpha^{a_i}\cdot\alpha^{-a_{2i}} = \beta^{b_{2i}}\cdot\beta^{-b_i}
+    \;\Rightarrow\; \alpha^{a_i-a_{2i}} = \beta^{b_{2i}-b_i}\]
+    \[\alpha^{a_i-a_{2i}} = \alpha^{x(b_{2i}-b_i)}
+    \;\Rightarrow\; \alpha^{a_i-a_{2i}}=(a^x)^{b_2i-b_i} \;\Rightarrow\;
+x\cdot(b_{2i}-b_i)=a_i-a_{2i}\mod 52\]
+
+\section*{Exercise 4}
+
+$p=31, g=11, d=8$
+
+$m$ message, $l=13$
+
+\begin{enumerate}
+    \item Compute $K_d, K_l$
+        \[K_d \;=\; g^d\mod p \;=\; 11^8\mod31 \;=\; 19\]
+        \[K_d \;=\; g^l\mod p \;=\; 11^{13}\mod31 \;=\; 21\]
+    \item 
+        \[K_{dl} \;=\; g^{dl}\mod p \;=\; (k_d)^l\mod p
+            \;=\; (k_l)^d\mod p \;=\; 19^{15}\mod 31\;=\;14\]
+    \item The cipher $c=12$. What is $m=?$
+        \begin{eqnarray*}
+            c &=& m\cdot K_{dl}\mod p\\
+            12 &=& 14m\mod31\\
+            14m &=& 12 \mod31\\
+            m &=& 12\cdot 14^{-1}\mod 31
+        \end{eqnarray*}
+        Use Euclid to compute $14^{-1}\mod31$ (Answer: 23).
+    \item New $K_d=10$. Find $x$ such that $11^x=10$ using Pohlig-Hellman.
+        \[ n \;=\; \varphi(p) \;=\; 30\;=\;2\cdot3\cdot5 \]
+        \begin{itemize}
+            \item $d_1=2$
+                \begin{eqnarray*}
+                    \alpha'&=&11^{15}\;=\;-1\mod 31\\
+                    \beta'&=&10^{15}\;=\;1\mod 31\\
+                    \alpha'^y &=& \beta'(-1)\;=\;1\mod 2
+                \end{eqnarray*}
+            \item $d_3=3$
+                \begin{eqnarray*}
+                    \alpha'&=&11^{10}\;=\;5\mod 31\\
+                    \beta'&=&10^{10}\;=\;1\mod 31\\
+                    5^y &=& 5\mod 3, y=1\\
+                    x &=& 1\mod 3
+                \end{eqnarray*}
+            \item $d_3=5$
+                \begin{eqnarray*}
+                    \alpha'&=&11^{6}\;=\;4\mod 31\\
+                    \beta'&=&10^{6}\;=\;2\mod 31\\
+                    4^y&=&2\mod 5\\
+                    x&=& 3\mod 5
+                \end{eqnarray*}
+        \end{itemize}
+\end{enumerate}
+
+\section*{Exercise 5}
+
+$\F_{64} \approxeq \F_2[x]/\langle x^6+x+1\rangle$
+
+$\alpha:=[x];\;S=\{x, x+1, x^2+x+1\}$
+
+$\beta:=[x^4+x^3+x^2+x+1]$
+
+Using Index Calculus, find $a$ such that $\alpha^a=\beta$.
+
+\begin{enumerate}
+    \item Generate relation.
+        \begin{eqnarray*}
+            x^6+x+1=0&\Leftrightarrow&x^6=x+1\\
+                     &\Leftrightarrow& [x]^6=[x+1]\\
+                     &\Leftrightarrow& 1=[x]^{-6}\cdot[x+1]^1\cdot[x^2+x+1]^0
+        \end{eqnarray*}
+        (6,1,0)
+        \[\alpha^{32} = \alpha^{26}\alpha^6 = (\alpha^{13})^2(x+1)
+        = (\alpha^{12}\alpha)(x+1)=((\alpha^6)^2\alpha)^2(x+1)\]
+        \[=((x+1)^2\alpha)^2(x+1) = ((x^2+1)x)^2(x+1)
+        =\alpha^{32}(x^3+x)^2(x+1)\]
+        \[=(x^6+x^2)(x+1)=(x+1+x^2)(x+1)=(x^2+x+1)(x+1)\]
+
+        \[1=[x]^{-32}[x+1]^1[x^2+x+1]^1\]
+        (-32,1,1)
+    \item Linear equations
+    \[\begin{pmatrix}-6&1&0\\-32&1&1\end{pmatrix}\cdot\begin{pmatrix}x_1\\x_2\\x_3\end{pmatrix}
+    =\begin{pmatrix}0\\0\\0\end{pmatrix}\]
+        where \begin{eqnarray*}
+            x_1&=&\log_{[x]}[x]=1\\
+            x_2&=&\log_{[x]}[x+1]=6\\
+            x_3&=&\log_{[x]}[x^2+x+1]=26
+        \end{eqnarray*}
+    \begin{eqnarray*}
+        \beta\cdot\alpha^2 &=& (x^4+x^3+x^2+x+1)\cdot[x]^2
+                           \;=\; x^6+x^5+x^4+x^3+x^2\\
+                           &=& x+1+x^5+x^4+x^3+x^2
+                           \;=\; x^5+x^4+x^3+x^2+x+1\\
+                           &=& [x+1]\cdot[x^2+x+1]^2\\
+        \alpha^{a+2} &=& \alpha^a\cdot\alpha^2 \;=\; [x+1]\cdot[x^2+x+1]\\
+        \log_\alpha\alpha^{a+2} &=& \log_\alpha([x+1]\cdot[x^2+x+1]^2)\\
+        (a+2)\log\alpha\alpha &=& \log_\alpha[x+1]+\log[x^2+x+1]^2\\
+        a+2 &=&  6+2\cdot\underbrace{\log[x^2+x+1]}_{=26}
+    \end{eqnarray*}
+    \[a=-2+6+2\cdot26\;\Rightarrow\; a=56\]
+\end{enumerate}
+
+\end{document}
+
