@@ -1,0 +1,202 @@
+\documentclass[a4paper]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{listings}
+\usepackage{enumitem}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand\ol\overline
+\newcommand\N{\mathbb N}
+\newcommand\Z{\mathbb Z}
+\newcommand\F{\mathbb F}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\df}{\mathrm{d}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.75em}
+\renewcommand*{\arraystretch}{1.5}
+
+\lstset{basicstyle=\small\ttfamily}
+
+\begin{document}
+
+\section*{Exercise 1}
+
+\textbf{Recall}
+\[ f\;=\;ax^3 + bx^2 + cx + d \]
+\[ f' \;=\; 3ax^2 + 2bx + c \]
+\[ \mathit{Res}(f,f') \;=\; \left|\begin{matrix}
+    a & b & c & d & 0\\
+    0 & a & b & c & d \\
+    3a & 2b & c & 0 & 0 \\
+    0 & 3a & 2b & c & 0 \\
+    0 & 0 & 3a & 2b & c
+\end{matrix}\right|\]
+
+\[f_1 \;=\; 1x^3 + 0x^2 + 1x + 0\]
+\[f_1' \;=\; 3x^2 + 0x + 1\]
+\[\mathit{Res}(f_1,f_1') \;=\; \left|\begin{matrix}
+    1 & 0 & 1 & 0 & 0\\
+    0 & 1 & 0 & 1 & 0\\
+    3 & 0 & 1 & 0 & 0\\
+    0 & 3 & 0 & 1 & 0\\
+    0 & 0 & 3 & 0 & 1
+\end{matrix}\right|\ \;=\; 1\cdot\left|\begin{matrix}
+    1 & 0 & 1 & 0\\
+    0 & 1 & 0 & 1\\
+    3 & 0 & 1 & 0\\
+    0 & 3 & 0 & 1
+\end{matrix}\right|\ \;=\; 1\cdot\left|\begin{matrix}
+    1 & 0 & 1\\
+    0 & 1 & 0\\
+    3 & 0 & 1
+\end{matrix}\right|\ + 1\cdot\left|\begin{matrix}
+    0 & 1 & 1\\
+    3 & 0 & 0\\
+    0 & 3 & 1
+\end{matrix}\right|\]
+\[\;=\;(1 + 0 + 0 - 3 - 0 - 0) + (0 + 0 + 9 - 0 - 3) \;=\; -2 + 6 \;=\; 4\]
+
+\smallskip
+
+\begin{eqnarray*}
+    \mathit{Res}(f_2, f_2') &=& 0\\
+    \mathit{Res}(f_3, f_3') &=& 16\\
+    \mathit{Res}(f_4, f_4') &=& 27a^2
+\end{eqnarray*}
+
+\smallskip
+
+\textbf{Recall:}
+\[f(x) \;=\; x^\alpha + \sum_{i=1}^d a_i x^{\alpha_i}\]
+$f$ has a double root iff one of the following holds:
+\begin{itemize}
+    \item ??
+    \item ??
+\end{itemize}
+
+\section*{Exercise 2}
+
+E: $y^2 + a_1xy + a_3 y \;=\; x^3 + a_2x^2 + a_4x + a_6$ on $\F_q$.
+
+$q=p^n, n\geq1, p\neq2, p\neq 3$
+
+We want to show that E: $y^2\;=\; x^3 +ax + b$.
+
+\begin{itemize}
+    \item If $p\neq2$, $y\mapsto y-\frac 1 2(a_1x-a_3)$.
+        \[\left(y-\frac 1 2(a_1x + a_3)\right)^2 + a_1x\left(y-\frac 1 2(a_1x+a_3)\right)
+            + a_3\left(y-\frac 1 2(a_1x+a_3)\right) \;=\; x^3+a_2x^2+a_4x+a_6\]
+        \[y^2 - \frac{a_1xy-a_3y}{(a_1x+a_3)y} + \frac 1 4(a_1^2x^2 + 2a_1a_3x+ a_3^2)+a_1xy\]
+        \[a_3y-\frac 1 2a_1a_3x - \frac 1 2a_3^2 \;=\; x^3+a_2x^2 + a_4x+a_6\]
+        \[y_2\;=\;x^3+\left(-\frac1 4a_1^2+\frac1 2a_1^2 + a_2\right)\cdot x^2+\left(a_4-\frac 1 2a_1a_3
+            + \frac1 2_1a_3+\frac1 2 a_1a_3\right)\cdot x + \left(a_6-\frac1 4a_3^2+\frac1 2a_3^2\right)\]
+        \[y^2 \;=\; x^3+\left(\frac{a_1^2+4a_2}4\right)\cdot x^2 + \left(\frac{2a_4 + a_1a_3}2\right)\cdot x
+            + \left(\frac{4a_6 + a_3^2}4\right)\]
+    \item Assume $p\neq 3$, $x\mapsto x-\frac{b_2}{12}$, $b_2 = a_1^2+4a+2$. Set
+        $b_4 \;=\; 2a_4 + a_1a_3, b_6 = 4a_6 = a_3^2$.
+        \[y^2 \;=\; x^3 + \frac {b_2}4x^2 + \frac{b_4}2x+\frac{b_6}4\]
+        \[y^2 = \left(x-\frac{b_2}{12}\right)^3 + \frac{b_2}{4}\left(x-\frac{b_2}{12}\right)^2
+            + \frac{b_4}2\left(x-\frac{b_2}{12}\right) + \frac{b_6} 4\]
+            \[y^2 \;=\; ??\]
+\end{itemize}
+
+\section*{Exercise 3}
+E: $y^2 \;=\; x^3 + x + 3, \F_11$.
+\subsection*{Exercise 3.1}
+Verify that E is an elliptic curve.
+??
+\subsection*{Exercise 3.2}
+$P=(0,5), Q=(5,1),\ P,Q\in E(\F_{11})$.
+
+Compute $P\oplus Q$.
+
+If $P=(x_1,y_1)$ and $Q=(x_2, y_2)$.
+\[x_3 \;=\; x_1-x_2 + \alpha^2 + a_1\alpha-a_2\]
+\[-y_3 \;=\; -(\alpha_1x_3+\beta) - a_1x_3-a_3\]
+$P\oplus Q = (x_3, -y_3)$
+
+\smallskip
+
+$P+Q \;=\; (4,7)$
+
+$2P \;=\; P+P \;=\; (1,7)$
+
+$\alpha \;=\; \frac{\df x}{\df y}P_1$
+
+$2Q \;=\; (4,4)$
+
+\subsection*{Exercise 3.3}
+
+\textbf{Recall} $\forall T\in E(\F_q) : \ord(T)\mid\#E(\F_q)$
+\[\#E(F_{11}) \;=\; 18\]
+$\ord(T) \;=\; n$, where $n$ is the smalles integer such that $n\cdot T\;=\;0$.
+
+\[\ord(P)\in\{1, 2, 3, 6, 9, 18\}\]
+\[2P \neq 0 \;\Rightarrow\; \ord(P) \neq 1,2\]
+\[3P = P + 2P = (3, 0) \neq 0\]
+\[6P = 3P + 3P = 0\]
+$\Rightarrow\;ord(P)=6$
+
+\[2Q = -(P+Q) \;\Rightarrow\; 3Q = -P\]
+\[\ord(Q)\in\{1, 2, 3, 6, 9, 18\}\]
+\[\hdots\]
+
+$\Rightarrow\;\ord(Q) = 18$
+
+\textbf{Verification}
+
+??
+
+\section*{Exercise 4}
+
+$E: y^2 \;=\; x^3+ax+b$.
+
+\smallskip
+
+\fbox{$1 \Rightarrow 2$} Suppose $\Delta_E \neq0$. Prove That $E$ is smooth.
+
+\textbf{Recall:} If $E$ is smooth, for $g(x,y)\;=\;y^2 -x^3 - ax - b$
+\textit{exactly one} of the following holds:\begin{enumerate}[label=(\roman*)]
+    \item $\frac{\partial g}{\partial x}(x_0, y_0) = 0$
+    \item $\frac{\partial g}{\partial y}(x_0, y_0) = 0$
+\end{enumerate}
+
+Suppose there is $(r,s)\in\F_q^2$ such that
+\[s^2=r^3+ar+b, -3r^2-a=0, 2s=0\]
+Hence $s=0, -3r^2=a$.
+
+Therefore
+\[b=-r^3 - (-3r^2)r = 2r^3\]
+This yields
+\[4(-3r^2)^3+27(2r^3)^2 = 0\]
+which is a contradition, so $E$ is not smooth.
+
+\bigskip
+
+\fbox{$2 \Rightarrow 3$} Suppose $E$ is smooth. Show that $f(x) = x^3+ax+b$ has \textit{no}
+double root.
+
+Suppose $f$ has a double root. Then $r^3+ar+b = 0$ and $3r^2+1=0$ for some $r\in F_q$.
+
+Now choose $s=0$. Then $2s=0$, but we found a pair $(r,s)\in\F_p^2$ such that $E$ is
+not smooth, which is a contradiction.
+
+Conclusion: $f$ has no double root.
+
+\bigskip
+
+\fbox{$3\Rightarrow1$} Suppose $f(x)=x^3 + ax + b$ has \textit{no} double root on $\F_q$.
+Show that $\Delta_E\neq0$.
+
+Suppose \[\Delta_E\;=\;0\;=\;4a^3+27b^2\;=\;((r_1-r_2)(r_2-r_3)(r_3-r_1))^2\]
+where $r_1,r_2,r_3$ are roots of $f$ in $\F_q$.
+
+Therefore $r_1-r_2=0$ or $r_2-r_3=0$ or $r_1-r_3=0$. This means that $f$ has a double root.
+
+Hence $\Delta\neq0$.
+\end{document}
+
