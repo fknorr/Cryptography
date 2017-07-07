@@ -15,6 +15,7 @@
 \newcommand\innerprod[1]{\left\langle #1 \right\rangle}
 \newcommand\N{\mathbb N}
 \newcommand\Z{\mathbb Z}
+\newcommand\R{\mathbb R}
 \newcommand\F{\mathbb F}
 \newcommand\cP{\mathcal P}
 \newcommand\cC{\mathcal C}
@@ -429,12 +430,149 @@ Rcon is an exponentiation operation
 
 \begin{figure}
     \centering
-    \includegraphics[scale=0.3]{images/aes-schedule.eps}
+    \includegraphics[scale=0.28]{images/aes-schedule.eps}
     \caption{AES key expansion}
     \label{aesschedule}
 \end{figure}
 
+\section{Modes of operation}
 
+\textbf{Goal:} Encrypt messages longer than $A_n$:
+\[(m_1,m_2,m_3,\hdots)\mapsto(c_1,c_2,c_3,\hdots)\]
+
+\subsection{Electronic Code Book (ECB)}
+Every block is encrypted with the same cipher.
+\[(m_1,m_2,m_3,\hdots)\mapsto(f_k(m_1),f_k(m_2),f_k(m_3),\hdots)\]
+\textbf{Disadvantage:} Identical plaintext blocks will result in identical
+ciphertext blocks, which may reveal patterns between plaintext blocks.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.7]{images/ecb.eps}
+    \caption{Electronic Code Book (ECB) mode}
+\end{figure}
+
+\subsection{Cipher Block Chaining (CBC) mode}
+
+Avoid the problems of ECB by XORing the plaintext with the ciphertext of the
+previous block. To make each message unique, a random (public) Initialization
+Vector (\textit{IV}) is required.
+
+\textbf{Algorithm}
+\begin{enumerate}
+    \item $c_{-1} = \mathit{IV}$
+    \item For each block:
+
+        $c_i := f_k(m_i \oplus c_{i-1})$ 
+\end{enumerate}
+
+\textbf{Disadvantage:} Does not allow parallelization as each block depends
+on the previous one.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.7]{images/cbc.eps}
+    \caption{Cipher Block Chaining (CBC) mode}
+\end{figure}
+
+\subsubsection{Counter (CTR) mode}
+
+Turns a block cipher into a stream cipher by encrypting a counter increased
+for each block and XORing the result to the plaintext block to generate a
+ciphertext block.
+
+To guarantee ciphertext uniqueness, the counter should start at a non-fixed
+value, similar to an initialization vector above.
+\[c_i:=m_i\oplus f_k(\mathit{IV}+i)\]
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.7]{images/ctr.eps}
+    \caption{Counter (CTR) mode}
+\end{figure}
+
+\subsubsection{Galois Counter Mode (GCM)}
+
+Galois Counter Mode provides \textit{Authenticated Encryption} by calculating an
+authentication tag along with the ciphertext.  
+It is a modification of the regular Counter mode, transforming the block- into
+a stream cipher. 
+
+It uses finite \textit{Galois Fields} \[F_{2^{128}}:=F_2[x]/(x^{128}+x^7+x^2+x+1)\]
+
+Authentication tag is computed by combining cipher texts with the \textit{hash key}
+consisting of \textit{authentication data} and the cipher text.
+
+\subsection{Linear Feedback Shift Registers}
+
+... Linear recurring sequences ...
+
+?? Lecture Notes week 4 pages 7-10
+
+\section{Notions of Security}
+
+\subsection{Security goals}
+Prevention of
+\begin{itemize}
+    \item Key compromization
+    \item Deciphering of individual messages
+    \item Obtaining of partial information
+\end{itemize}
+
+A strong cipher should provide \textit{indistinguishability} through \textit{randomization}
+to prevent an attacker from obtaining partial information.
+
+\subsection{Attack models}
+
+\begin{itemize}
+    \item Ciphertext Only Attack (COA)
+
+        Only the ciphertext is known
+    \item Known Plaintext Attack (KPA)
+
+        Some plaintext-ciphertext pairs $(m,c)$ are known
+    \item Chosen Plaintext Attack (CPA)
+
+        Plaintext-ciphertext pairs $(m,c)$ are known, where $m$ may be chosen by the attacker
+        - always relevant for public-key cryptosystems
+    \item Chosen Ciphertext Attack (CCA)
+
+        Plaintext-ciphertext pairs $(m,c)$ are known, where $c$ may be chosen
+\end{itemize}
+
+Shannon: Communication theory of secrecy systems
+
+\subsection{Perfect security}
+
+\subsubsection{Encryption function}
+
+For each $k\in\cK$ the encryption map
+\[f_k:\cP\rightarrow\cC,\quad m\mapsto f(m,k)\]
+is injective since there exists a left-inverse via $g_k$. It follows that
+\[\#\cP\leq\#\cC\]
+
+\subsubsection{Probability distributions}
+
+A \textit{probability distribution} on a finite set is a map $\mathit{Pr}_X:x\rightarrow \R_+$
+such that \[\sum_{x\in X}\mathit{Pr}_X(x)=1\]
+
+An \textit{event} is a subset $A\subset X$ with
+\[\sum_{x\in A}\mathit{Pr}_X(x)\leq1\]
+
+For probability distributions $\mathit{Pr}_\cP$ on the plaintexts and $\mathit{Pr}_\cK$ on the
+keys, we assume the distributions to be independent
+\[\mathit{Pr}(m,k) = \mathit{Pr}_\cP\cdot(m)\mathit{Pr}_\cK(k)\]
+
+With $c=f(m,k)$ we get the probability distribution $\mathit{Pr}_\cC$ with
+\[\mathit{Pr}_\cC(c)=\mathit{Pr}(\{(m,k)\mid f(m,k)=c\})\]
+
+\subsection{Perfect security}
+
+An encryption function $f$ together with the key distribution $\mathit{Pr}_\cK$ is
+\textit{perfectly secure} if any plaintext distribution $\mathit{Pr}_\cP$ is
+independent from its ciphertext distribution $\mathit{Pr}_\cC$, i.e.
+\[\mathit{Pr}(m,c)=\mathit{Pr}_\cP(m)\cdot\mathit{Pr}_\cC(c)\]
+for all $m$ and $c$.
 
 \end{document}
 
