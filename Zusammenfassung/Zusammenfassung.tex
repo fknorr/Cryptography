@@ -5,6 +5,7 @@
 \usepackage{amsopn}
 \usepackage{enumitem}
 \usepackage{graphicx}
+\usepackage{placeins}
 
 \newcommand\norm[1]{\left\lVert #1 \right\rVert}
 \newcommand\abs[1]{\left| #1 \right|}
@@ -313,6 +314,126 @@ Examples:\begin{itemize}
     \item For $R=\Z$, $d = |\cdot|$
     \item For $R=F[x]$ (polynomial), where F is a field, $d=\deg$
 \end{itemize}
+
+\section{Advanced Encryption Standard}
+
+128-bit block cipher.
+
+\textbf{Three versions:}
+\begin{center}
+    \begin{tabular}{c|ccc}
+        key length & 128 & 192 & 256 \\
+        \hline
+        rounds & 10 & 12 & 14
+    \end{tabular}
+\end{center}
+
+\textbf{Basic Algorithm:}
+\begin{enumerate}
+    \itemsep-5pt
+    \item AddRoundKey
+    \item $r-1$ times:
+        \vspace*{-5pt}
+        \begin{enumerate}[label=\arabic*.]
+        \itemsep-5pt
+            \item SubBytes
+            \item ShiftRows
+            \item MixColumns
+            \item AddRoundKey
+        \end{enumerate}
+    \item SubBytes
+    \item ShiftRows
+    \item AddRoundKey
+\end{enumerate}
+
+\FloatBarrier
+
+\subsection{SubBytes}
+
+Use the finite field $\F_{256}\;:=\;\F_2[x]/(x^8+x^4+x^2+x+1)$, which is isomorphic to $(\F_2)^8$,
+and define $0^{-1} = 0$.
+
+SubBytes is a non-linear map of the form
+\[S:b\mapsto Ab^{-1}+c\]
+with fixed $A$ and $c$.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.25]{images/subbytes.png}
+    \caption{SubBytes}
+\end{figure}
+
+\subsection{ShiftRows}
+
+ShiftRows views the 128-bit-block as a $4\times4$-Matrix with 8-bit entries,
+and computes a new matrix by rotating the $i$th row left by $i-1$ columns.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{images/shiftrows.png}
+    \caption{ShiftRows}
+\end{figure}
+
+\subsection{MixColumns}
+
+The $4\times4$-Matrix is split into four columns, which are represented by the polynomial
+\[a_3x^3 + a_2x^2 + a_1x + a_0\;\in\;\F_{256}[x]\]
+Multiplying it with the fixed polynomial
+\[3x^3 + x^2 + x + 2\]
+yields the MixColums result which can be written as a linear system
+\[\begin{pmatrix}
+    b_0\\b_1\\b_2\\b_3
+\end{pmatrix}\;=\;\begin{pmatrix}
+    2 & 3 & 1 & 1 \\
+    1 & 2 & 3 & 1 \\
+    1 & 1 & 2 & 3 \\
+    3 & 1 & 1 & 2
+\end{pmatrix}\begin{pmatrix} 
+    a_0\\a_1\\a_2\\a_3
+\end{pmatrix}\]
+This step is similar to a Hill cipher.
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.25]{images/mixcolumns.png}
+    \caption{MixColumns}
+\end{figure}
+
+\subsection{AddRoundKey}
+
+In each AddRoundKey step, the 128-bit block is XORed with a 128-bit \textit{Round Key} as
+derived from the key schedule.
+
+\subsection{Key Schedule}
+
+Round key $k^{i+1}$ is derived from $k^{i}$ by applying RotWord, SubWord, Rcon and XOR operations
+in the order shown in figure \ref{aesschedule}.
+
+The RotWord-SubWord-Rcon block is actually
+\[\mathrm{SubWord}(\mathrm{RotWord}(w))\oplus \mathrm{Rcon}(i)\]
+
+\subsubsection{RotWord}
+
+Performs an 8-bit left-rotation of the 32-bit word.
+\[(b_0,b_1,b_2,b_3)\mapsto(b_1,b_2,b_3,b_0)\]
+
+\subsubsection{SubWord}
+
+SubBytes (the S-box operation) applied to each byte of the 32-bit word.
+\[(b_0,b_1,b_2,b_3)\mapsto(Ab_0^{-1}+c,Ab_1^{-1}+c,Ab_2^{-1}+c,Ab_3^{-1}+c)\]
+
+\subsubsection{Rcon}
+
+Rcon is an exponentiation operation
+\[n\mapsto (x^n, 0, 0, 0)\]
+
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.3]{images/aes-schedule.eps}
+    \caption{AES key expansion}
+    \label{aesschedule}
+\end{figure}
+
 
 
 \end{document}
