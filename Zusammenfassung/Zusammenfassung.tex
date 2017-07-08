@@ -20,6 +20,11 @@
 \newcommand\cP{\mathcal P}
 \newcommand\cC{\mathcal C}
 \newcommand\cK{\mathcal K}
+\newcommand\bigO{\mathcal O}
+\newcommand\bigo o
+\newcommand\Prob{\mathit{Pr}}
+\newcommand\compP{\mathbf{P}}
+\newcommand\compNP{\mathbf{NP}}
 \renewcommand\mod{\hspace*{0.4em}\mathrm{mod}\hspace*{0.2em}}
 
 \DeclareMathOperator\ess{ess}
@@ -39,6 +44,7 @@
 \thispagestyle{empty}
 \newpage
 
+\setcounter{tocdepth}{2}
 \tableofcontents
 \newpage
 
@@ -549,30 +555,138 @@ Shannon: Communication theory of secrecy systems
 For each $k\in\cK$ the encryption map
 \[f_k:\cP\rightarrow\cC,\quad m\mapsto f(m,k)\]
 is injective since there exists a left-inverse via $g_k$. It follows that
-\[\#\cP\leq\#\cC\]
+\[|\cP|\leq|\cC|\]
 
 \subsubsection{Probability distributions}
 
-A \textit{probability distribution} on a finite set is a map $\mathit{Pr}_X:x\rightarrow \R_+$
-such that \[\sum_{x\in X}\mathit{Pr}_X(x)=1\]
+A \textit{probability distribution} on a finite set is a map $\Prob_X:x\rightarrow \R_+$
+such that \[\sum_{x\in X}\Prob_X(x)=1\]
 
 An \textit{event} is a subset $A\subset X$ with
-\[\sum_{x\in A}\mathit{Pr}_X(x)\leq1\]
+\[\sum_{x\in A}\Prob_X(x)\leq1\]
 
-For probability distributions $\mathit{Pr}_\cP$ on the plaintexts and $\mathit{Pr}_\cK$ on the
+For probability distributions $\Prob_\cP$ on the plaintexts and $\Prob_\cK$ on the
 keys, we assume the distributions to be independent
-\[\mathit{Pr}(m,k) = \mathit{Pr}_\cP\cdot(m)\mathit{Pr}_\cK(k)\]
+\[\Prob(m,k) = \Prob_\cP\cdot(m)\Prob_\cK(k)\]
 
-With $c=f(m,k)$ we get the probability distribution $\mathit{Pr}_\cC$ with
-\[\mathit{Pr}_\cC(c)=\mathit{Pr}(\{(m,k)\mid f(m,k)=c\})\]
+With $c=f(m,k)$ we get the probability distribution $\Prob_\cC$ with
+\[\Prob_\cC(c)=\Prob(\{(m,k)\mid f(m,k)=c\})\]
 
-\subsection{Perfect security}
+\subsubsection{Perfect security}
 
-An encryption function $f$ together with the key distribution $\mathit{Pr}_\cK$ is
-\textit{perfectly secure} if any plaintext distribution $\mathit{Pr}_\cP$ is
-independent from its ciphertext distribution $\mathit{Pr}_\cC$, i.e.
-\[\mathit{Pr}(m,c)=\mathit{Pr}_\cP(m)\cdot\mathit{Pr}_\cC(c)\]
+An encryption function $f$ together with the key distribution $\Prob_\cK$ is
+\textit{perfectly secure} if any plaintext distribution $\Prob_\cP$ is
+independent from its ciphertext distribution $\Prob_\cC$, i.e.
+\[\Prob(m,c)=\Prob_\cP(m)\cdot\Prob_\cC(c)\]
 for all $m$ and $c$.
+
+\subsubsection{Conditional probabilities}
+
+For $A,B\subset X$ and probability distribution $\Prob$ with $\Prob(B)>0$, define
+the \textit{conditional probability}\[\Prob(A|B) := \frac{\Prob(A\cap B)}{\Prob(B)}\]
+$A$ and $B$ are independent if $\Prob(A|B)=\Prob(A)$.
+
+\bigskip
+A cryptosystem provides \textit{perfect security} iff either (equivalently)
+\begin{itemize}
+    \item knowledge of the chiphertext reveals no knowledge of the plaintext
+        \[\Prob(m|c)=\Prob_\cP(m)\]
+    \item or the distribution of the ciphertext does not depend on the plaintext
+        \[\Prob(c|m)=\Prob_\cC(c)\]
+\end{itemize}
+
+\subsubsection{Shannon's theorems}
+\begin{enumerate}
+    \item For any perfectly secure cryptosystem $\cP\times\cK\rightarrow\cC$, $|\cK|\geq|\cP|$.
+    \item For $|\cP|=|\cK|=|\cC|$, an encryption function $f:\cP\times\cK\rightarrow\cC$ is
+        perfectly secure iff
+        \begin{itemize}
+            \item The key distribution $\Prob_\cK$ is uniform
+            \item For every $(m,c)\in\cP\times\cC$, there is a (unique) $k\in\cK$ with $f_k(m)=c$.
+        \end{itemize}
+\end{enumerate}
+
+\subsection{Indistinguishability}
+
+An encryption scheme is \textit{secure in terms of indistinguishability} if for every
+pair of messages $m_0$ and $m_1$, their encryptions $f_k(m_0)$ and $f_k(m_1)$ are
+identically distributed.
+
+This means that without knowing the key, two plaintexts are impossible to distinguish
+via their ciphertexts.
+
+\subsubsection{Unconditional security}
+
+Consider an infinite sequence of random bits $b\in\{0,1\}$ encrypted with keys distributed
+according to $\Prob_\cK$. If the chance to guess $b$ from $f_k(b)$ without knowledge of $k$
+is exactly $0.5$, $f$ provides \textit{unconditional security}.
+
+\subsection{One-Time Pad}
+
+Also known as \textit{Vernam cipher}.
+
+For $\cP=\cK=\cC = \{0,1\}^n$ set \[f:(m,k)\mapsto m\oplus k.\]
+
+This cryptosystem is perfectly secure if $\Prob_\cK$ is uniformly distributed.
+
+\textbf{Caveats:}\begin{itemize}
+    \item There must be a secure and correctly distributed key generation function
+    \item The key (as long as the message) must be securely transmitted
+    \item The key may only be used once
+\end{itemize}
+
+\section{Complexity Theory}
+\subsection{Practical Security}
+
+\begin{itemize}
+    \item \textit{Theoretical security}: Impossible to break for an adversary with
+        unbounded resources
+    \item \textit{Practical security} or \textit{computational security}: Infeasible
+        to break for an efficient adversary with reasonable resources
+\end{itemize}
+
+\subsection{Security Proofs}
+
+The difficulty of a computational problem can be described using a \textit{reduction
+argument}. A problem $P$ is no more difficult than $Q$ if $P$ can be reduced to $Q$,
+i.e. solvability of $Q$ implies solvability of $P$.
+
+\subsection{Big-O Notation}
+
+Compares functions asymptotically.
+
+\begin{itemize}
+    \item $f(n)\in\bigO(g(n))$ if for $n\rightarrow\infty$, $f(n) \leq g(n)$ or
+        \[\lim_{n\rightarrow\infty}\left|\frac{f(n)}{g(n)}\right| < \infty\]
+    \item $f(n)\in\bigo(g(n))$ if for $n\rightarrow\infty$, $f(n) < g(n)$ or
+        \[\lim_{n\rightarrow\infty}\frac{f(n)}{g(n)} = 0\]
+    \item $f(n)\in\Omega(g(n))$ if $g(n)\in\bigO(f(n))$
+\end{itemize}
+
+\subsection{Decision Problems}
+
+For a language $L\subseteq\{0,1\}^*$, the \textit{decision problem} is to decide
+whether $x\in L$ or $x\not\in L$ for any $x\in\{0,1\}^*$.
+
+\subsubsection{Polynomial Time}
+
+The decision problem is called \textit{polynomial time} if there is a polynomial
+time algorithm $\in\bigO(n^c), c\in\N$ that decides $L$. This class of problems
+is denoted by $\compP$.
+
+\textbf{Example:} PRIMES, the problem whether a number $n\in\N$ is prime.
+
+\subsubsection{Non-Deterministic Polynomial Time}
+
+The decision problem is called \textit{non-deterministic polynomial time} if it
+can be written in the form 
+\[L=\{x\mid\exists y\in\{0,1\}^*:(x,y)\in R\}\]
+for a relation $R\subseteq \{0,1\}^* \times \{0,1\}^*$ that can be decided
+in polynomial time. This class of problems is denoted by $\compNP$.
+
+\smallskip
+The decision problem for $L$ is called \textbf{co-NP} if the complement $L^c$ is in
+$\compNP$.
 
 \end{document}
 
