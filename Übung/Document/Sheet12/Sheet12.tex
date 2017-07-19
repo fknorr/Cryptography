@@ -1,0 +1,168 @@
+\documentclass[a4paper]{scrreprt}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsopn}
+\usepackage{listings}
+\usepackage{enumitem}
+\usepackage{graphicx}
+
+\newcommand{\norm}[1]{\left\lVert #1 \right\rVert}
+\newcommand\ol\overline
+\newcommand\N{\mathbb N}
+\newcommand\Z{\mathbb Z}
+\newcommand\F{\mathbb F}
+\DeclareMathOperator{\ess}{ess}
+\DeclareMathOperator{\sgn}{sgn}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\df}{\mathrm{d}}
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.75em}
+\renewcommand*{\arraystretch}{1.5}
+\renewcommand\mod{\ \mathrm{mod}\:}
+
+\lstset{basicstyle=\small\ttfamily}
+
+\begin{document}
+
+\section*{Exercise 1}
+
+e.g. $F=\F_3=\{\overline0,\overline1,\overline2\}$
+\begin{itemize}
+    \item $X = (\overline 0, \overline 2, \overline 1, \overline 1)$
+    \item $Y = (\overline 0, \overline 1, \overline 1, \overline 2)$
+\end{itemize}
+
+Show that $d_H$ satisifies the properties of a metric.
+
+\begin{itemize}
+
+\item Definiteness
+\[\forall x,y\in F^n: d_+,(x,y)=0\;\Leftrightarrow\;x=y\]
+Let $x,y\in F^n$.
+
+\begin{eqnarray*}
+    d_H(x,y)=0 &\Leftrightarrow& |\{i\in[n]:x_i\neq y_i\}|=0 \\
+        &\Leftrightarrow& \forall i\in[n]:x_i=y_i\\
+        &\Leftrightarrow& x=y
+\end{eqnarray*}
+
+\item Symmetry
+    \[\forall x,y\in F^n:d_H(x,y) = d_H(y,x)\]
+    Let $x,y\in F^n$.
+\begin{eqnarray*}
+    d_H(x,y) &=& |\{i\in[n]\mid x_i\neq y_i\}| \\
+             &=& \{i\in[n]\mid y_i\neq x_i\}|\\
+             &=& d_H(y,x)
+\end{eqnarray*}
+
+\item Triangle inequality
+    \[\forall x,y,z\in F^n:d_H(x,z)\leq d_H(x,y)+d_H(y,z)\]
+Let $x,y,z\in F^n$ and $i\in[n]$.
+
+\begin{center}
+\begin{tabular}{c|ccccc}
+    & $d_H(x,z)$ && $d_H(x,y)$ && $d_H(y,z)$ \\
+    \hline
+    $x_i=y_i=z_i$ & 0 & $\leq$ & 0 & $+$ & 0 \\
+    $x_i=y_i\neq z_i$ & 1 & $\leq$ & 0 & $+$  &1 \\
+    $x_i=z_i\neq y_i$ & 0 & $\leq$ & 1 & $+$ & 1 \\
+    $x_i\neq y_i=z_i$ & 1 & $\leq$ & 1 & $+$ & 0 \\
+    $x_i\neq y_i\neq z_i$ & 1 & $\leq$ & 1 & $+$ & 1 \\
+\end{tabular}
+\end{center}
+
+\end{itemize}
+
+\section*{Exercise 2}
+
+\[A_1 \;=\; \begin{pmatrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 3 & 5 & 2\end{pmatrix}
+    \leadsto\begin{pmatrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 0 & 5 & -7\end{pmatrix}
+    \leadsto\begin{pmatrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 0 & 0 & -47\end{pmatrix}
+    \leadsto\begin{pmatrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 0 & 0 & 47\end{pmatrix}\]
+\[U_1 \;=\; \begin{pmatrix}1 & 0 & 0\\0 & 1 & 0\\0 & 0 & 1\end{pmatrix}
+    \leadsto\begin{pmatrix}1 & 0 & 0\\0 & 1 & 0\\-3 & 0 & 1\end{pmatrix}
+    \leadsto\begin{pmatrix}1 & 0 & 0\\0 & 1 & 0\\-3 & -5 & 1\end{pmatrix}
+\leadsto\begin{pmatrix}1 & 0 & 0\\0 & 1 & 0\\3 & 5 & -1\end{pmatrix}\]
+
+Normal form:\[H=U_1A_1\]
+
+Can be computed directly like so:
+\begin{eqnarray*}
+    A_1\mid I &=& \left(\begin{matrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 3 & 5 & 2\end{matrix}
+        \ \middle\vert\ \begin{matrix}1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1\end{matrix}\right)
+    \leadsto\left(\begin{matrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 0 & 5 & -7\end{matrix}
+        \ \middle\vert\ \begin{matrix}1 & 0 & 0 \\ 0 & 1 & 0 \\ -3 & 0 & 1\end{matrix}\right)\\
+    &&\leadsto\left(\begin{matrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 0 & 0 & -47\end{matrix}
+        \ \middle\vert\ \begin{matrix}1 & 0 & 0 \\ 0 & 1 & 0 \\ -3 & -5 & 1\end{matrix}\right)
+    \leadsto\left(\begin{matrix}1 & 0 & 3 \\ 0 & 1 & 8 \\ 0 & 0 & 47\end{matrix}
+        \ \middle\vert\ \begin{matrix}1 & 0 & 0 \\ 0 & 1 & 0 \\ 3 & 5 & -1\end{matrix}\right)
+\end{eqnarray*}
+
+\section*{Exercise 3}
+
+\begin{enumerate}[label=\alph*)]
+    \item Compute the determinant of $\Lambda$.
+    \[\det(\Lambda)\;=\;\left|\begin{matrix}12 & 13 \\ 2 & 4\end{matrix}\right|\;=\;48-26\;=\;22\]
+
+    \item Find orthogonal Vectors $v_1^*, v_2^*$ using Gram-Schmidt orthogonalization.
+        \begin{eqnarray*}
+            v_1 &=& v_1^* \;=\; \begin{pmatrix}12\\2\end{pmatrix}\\[0.5em]
+            v_2^* &=& v_2 - \frac{\langle v_1^*, v_2\rangle}{\langle v_1^*,v_1^*\rangle}
+                \;=\; \begin{pmatrix}13\\4\end{pmatrix}-\frac{12\cdot13+2\cdot4}{12\cdot12+2\cdot2}\\
+                &=& \begin{pmatrix}13\\4\end{pmatrix} - \frac{164}{148}\begin{pmatrix}12\\2\end{pmatrix}
+                \;=\; \begin{pmatrix}13\\4\end{pmatrix} - \frac{41}{37}\begin{pmatrix}12\\2\end{pmatrix}
+                \;=\; \frac{1}{37}\begin{pmatrix}-11\\66\end{pmatrix}\\[0.5em]
+                &=&\begin{pmatrix}-\frac{11}{37}\\-\frac{66}{37}\end{pmatrix}
+        \end{eqnarray*}
+
+    \item Find a shortest vector $v$ of $\Lambda$.
+    \[v=v_2-v_1=\begin{pmatrix}1\\2\end{pmatrix}
+            \qquad \norm{v}=\sqrt{1+4}=\sqrt5\]
+    \vspace*{-0.5em}
+    \[\qquad \norm{v_1^*} = \sqrt{12^2+4}
+        \qquad \norm{v_2^*} = \sqrt{\left(\frac{11}{37}\right)^2 + \left(\frac{66}{37}\right)^2}\]
+
+    LLL Algorithm: Shortest vectors are of norm 2.
+\end{enumerate}
+
+\section*{Exercise 4}
+
+Sphere packing.  
+Formula: \[\mathrm{dens}(\Lambda)\;=\;\frac{\left(\frac d2\right)\cdot\pi}{\det(\Lambda)}\]
+
+where $d$ is the length of the shortest vector in $\Lambda$:
+
+\[d\;=\;\min(\norm{v_1-v_2}, \norm{v_2-v_3}, \norm{v_1-v_3}) \;=\; 1\]
+
+\[\det(\Lambda)\;=\;\left|\begin{matrix}1 & 0 & 0\\ \frac12 & \frac{\sqrt3}2 & 0\\
+    \frac12 & \frac1{2\sqrt3} & \frac{\sqrt2}{\sqrt3}\end{matrix}\right|
+    \;=\; 1\cdot\frac{\sqrt3}2\cdot\frac{\sqrt2}{\sqrt3}\;=\;\frac1{\sqrt2}\;=\;\frac{\sqrt2}2\]
+
+\[\mathrm{dens}(\Lambda)\;=\;\frac{\frac43\cdot\frac18\cdot\pi}{\frac1{\sqrt2}}\;=\;
+\frac{\frac16\pi}{\frac1{\sqrt2}}\;=\;\frac\pi6\cdot\sqrt2\]
+
+\section*{Exercise 4}
+
+\subsection*{Exercise 4.1}
+
+\[s \;=\; 1 + 20 + 35\]
+
+\subsection*{Exercise 4.2}
+
+Using the LLL Algorithm:
+\[\widetilde B\;=\;\begin{pmatrix}
+1 & 0 & 0 & 1 & 1 & 0 & 0 & 0\\
+0 & 0 & 1 & 0 & -1 & -1 & 1 & 1\\
+1 & 0 & 1 & 0 & -2 & 0 & 0 & -1\\
+0 & 0 & 2 & -1 & 0 & 0 & 0 & -1\\
+-1 & 1 & 2 & 1 & 0 & 1 & 0 & 1\\
+0 & -2 & 1 & 1 & -1 & 1 & 0 & 1\\
+-1 & 0 & 1 & 2 & 0 & 0 & -1 & -2\\
+0 & 0 & 1 & 0 & 0 & 0 & -3 & 0\\
+\end{pmatrix}\]
+
+Shortest vector (first row) is $(1, 0, 0, 1, 1, 0, 0, 0)$.
+
+\end{document}
+
