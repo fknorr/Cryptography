@@ -6,6 +6,9 @@
 \usepackage{enumitem}
 \usepackage{graphicx}
 \usepackage{placeins}
+\usepackage{hyperref}
+\usepackage{cite}
+\usepackage{natbib}
 
 \newcommand\norm[1]{\left\lVert #1 \right\rVert}
 \newcommand\abs[1]{\left| #1 \right|}
@@ -23,9 +26,10 @@
 \newcommand\bigO{\mathcal O}
 \newcommand\bigo o
 \newcommand\Prob{\mathit{Pr}}
-\newcommand\compP{\mathbf{P}}
-\newcommand\compNP{\mathbf{NP}}
+\newcommand\compP{\mathcal{P}}
+\newcommand\compNP{\mathcal{NP}}
 \renewcommand\mod{\hspace*{0.4em}\mathrm{mod}\hspace*{0.2em}}
+\newcommand\linetag[1]{\textbf{\sffamily#1\;\ }}
 
 \DeclareMathOperator\ess{ess}
 \DeclareMathOperator\supp{supp}
@@ -33,7 +37,9 @@
 \DeclareMathOperator\sgn{sgn}
 \newcommand\df{\:\mathrm d}
 \setlength\parindent{0em}
-\setlength\parskip{0.75em}
+\setlength\parskip{0.5em}
+
+\bibliographystyle{plainnat}
 
 \title{Cryptography}
 \subtitle{SS 2017}
@@ -275,6 +281,9 @@ If $p$ is an irreducible polynomial of degree $m$, the residue classes modulo $p
 define the binary field $\F_{2^m}$.
 
 \subsection{Extended Euclidean Algorithm}
+
+
+\label{eea}
 
 For any $a,b\in\N$ there exist $s,t\in\Z$ such that\[\gcd(a,b)=sa+tb\]
 
@@ -649,7 +658,7 @@ This cryptosystem is perfectly secure if $\Prob_\cK$ is uniformly distributed.
 
 The difficulty of a computational problem can be described using a \textit{reduction
 argument}. A problem $P$ is no more difficult than $Q$ if $P$ can be reduced to $Q$,
-i.e. solvability of $Q$ implies solvability of $P$.
+i.e.\ solvability of $Q$ implies solvability of $P$.
 
 \subsection{Big-O Notation}
 
@@ -685,8 +694,198 @@ for a relation $R\subseteq \{0,1\}^* \times \{0,1\}^*$ that can be decided
 in polynomial time. This class of problems is denoted by $\compNP$.
 
 \smallskip
-The decision problem for $L$ is called \textbf{co-NP} if the complement $L^c$ is in
+The decision problem for $L$ is called $\mathrm{co-}\compNP$ if the complement $L^c$ is in
 $\compNP$.
+
+\subsubsection*{Polynomial-Time reduction}
+
+The Problem $L$ \textit{reduces} to $M$ if there exists a polynomial time transformation from a solver for $M$ to a solver for $L$.
+
+A problem is called $\compNP$-hard if every problem in $\compNP$ reduces to it.
+
+A problem is $\compNP$-complete if it is $\compNP$-hard and is in $\compNP$ itself.
+
+\section{Number theoretic algorithms}
+
+Numbers are represented in the form
+\[x\;=\;(-1)^s\sum_{i=0}^{n-1}a_iB^i\]
+with $0\leq a_i\leq B-1$ where $s\in\{0,1\}$ is the sign and $B\geq2$ is the base.
+
+\subsection{Basic operation complexity}
+Complexities are given with respect to the number of digits $n$.
+
+\begin{itemize}
+    \item \linetag{Addition} School-book, digit-wise addition with carry. Complexity: $\bigO(n)$. 
+    \item \linetag{Multiplication} Sum over simple digit-times-number multiplications. Complexity: $\bigO(n)$.
+    \item \linetag{Division} Long division with remainder. Complexity: $\bigO((n-m)m)$.
+    \item \linetag{Extended Euclidean Algorithm} as described in \ref{eea}. Complexity: $\bigO(n^2)$.
+\end{itemize}
+
+\subsection{Modular arithmetic}
+
+\subsubsection{Residue Class Rings}
+
+Define the equivalence class $[x]$ with the relation \[a\sim_nb\;:=\;n\mid a-b.\]
+
+The set $\Z_n:=\{[x]\mid x\in\Z\}$ together with the operations
+\begin{eqnarray*}
+    [x]+[y]&:=&[x+y]\\{}
+    [x]\cdot[y]&:=&[x\cdot y]
+\end{eqnarray*}
+creates the \textit{residue class ring} $\Z_n$.
+
+\subsubsection{Modular inversion}
+$[a]$ is invertible in $\Z_n$ iff $\gcd(a,n)=1$.
+
+$Z_n$ is a field iff $n$ is prime.
+
+\subsubsection{Basic operation complexity}
+
+\begin{itemize}
+    \item \linetag{Addition} $\bigO(\log p)$. 
+    \item \linetag{Multiplication} $\bigO((\log p)^2)$.
+    \item \linetag{Inversion} $\bigO((\log p)^2)$.
+    \item \linetag{Powering} Square-and-multiply, $\bigO((\log n)(\log p)^2)$.
+\end{itemize}
+
+\subsection{Chinese Remainder Theorem}
+
+For pairwise coprime $n_1,\hdots,n_r\in\N$ and $a_1,\hdots,a_r\in\Z$ there exists a unique $x$ with $0\leq x< n$ where $n=\prod_in_i$ with \[x\equiv a_i\mod n_i,\qquad i=1,\hdots,r\]
+
+\subsubsection{Solving CRT via the Extended Euclidean Algorithm}
+
+Given the congruences\[x\equiv a_i\mod n_i,\qquad i=1,\hdots n,\]for $j\in\{1,\hdots,n\}$
+
+\smallskip
+\begin{enumerate}
+    \item Define\[m_j\;:=\;\prod_{i\neq j}n_i\]
+    \item Use the Extended Euclidean Algorithm to find $s,t\in\Z$ such that $sm_j+tn_j=1$
+    \item Set $x_j:=sm_j$
+\end{enumerate}
+\smallskip
+
+The solution for the congruence set is \[x\;\equiv\;\paren{\sum_ja_jx_j}\mod n\]
+
+\section{Prime numbers and factoring}
+
+\subsection{Euler's Phi Function}
+
+\begin{samepage}
+For $n\in\N$, define
+\[\varphi(n)\;:=\;\abs{\Z_n}\;=\;\abs{\{a\in\Z_n\mid\gcd(a,n)=1\}}\]
+$\varphi(n)$ counts the numbers $<n$ coprime to $n$.
+\end{samepage}
+
+\subsection{Modular powers}
+
+For any finite group $G$ of order $m$ \[a^m=1,\qquad a\in G.\]
+\linetag{Euler} For $a\in\Z^*_n$ \[a^{\varphi(n)}\;=\;1\mod n\]
+\linetag{Fermat} If $p$ is prime, \[a^p\;=\;a\mod p\]
+
+\subsection{Primaliy tests}
+
+For large numbers, primality testing is generally easier than factoring.
+
+\subsubsection{Fermat test}
+For a prime $p$,
+\[a^p\;\equiv\; a\mod p\]
+
+Numbers can be shown to be composite by disproving this identity.
+
+Nevertheless, there exist composite numbers $p$ for which this identity holds for all $a$. These pseudo-primes are called \textit{Carmichael numbers}.
+
+\subsubsection{Fermat numbers}
+
+Define the fermat number $F_n$ as \[F_n\;:=\;2^{2^n}+1.\]
+
+If $p$ is a prime factor of $F_n$, then \[p\;\equiv\;1\mod 2^{n+1}.\]
+
+\section{Discrete Logarithm Problem}
+
+\subsection{Cyclic groups}
+
+\paragraph{Group} A set $G$ with an operation $\circ:G\rightarrow G$ such that
+\begin{itemize}
+    \item $\circ$ is associative
+    \item There is a neutral element $e$ such that \[e\circ a\;=\;a\;=\;a\circ e,\qquad a\in G\]
+    \item Each element $a\in G$ has an inverse $a^{-1}\in G$.
+\end{itemize}
+
+\paragraph{Cyclic groups} A group is called \textit{cyclic} if it is created by a single element, i.e. \[G\;=\;\{a^x\mid x\in\Z\}\]
+
+\paragraph{Primitive Roots} A primitive root modulo $p$ is a number $g$ such that
+\[\exists x\in\N:g^x=r,\qquad r=1,\hdots,p-1\]
+i.e.\ $g^x$ can take any number in $1,\hdots,p-1$ for an appropriate choice of $x$.
+
+\subsection{Discrete Logarithm Problem (DLP)}
+Given $a,b\in G$, find $x\in\Z_n$ such that \[a^x\;=\;b.\] The solution is unique modulo $n$.
+
+\smallskip This is a \textit{one-way function} in the sense that computing $b$ from $a$ and $x$ is efficiently done using square-and-multiply while obtaining $x$ from $a$ and $b$ is the computationally hard DLP.
+
+\subsection{Diffie-Hellman Key Agreement}
+
+\subsubsection{Diffie-Hellman Problem (DHP)}
+
+Given $x\in \F_p$ and $x^a,x^b\in \F_p$ for a large prime $p$, find $x^{ab}$.
+
+\subsubsection{Diffie-Hellman Key Exchange}
+
+\begin{enumerate}
+    \item Alice and Bob agree on a publicly known prime $p$ and primitive root $g$ modulo $p$.
+    \item Alice chooses random $a$, publishing $g^a\mod p$.
+    \item Bob chooses random $b$, publishing $g^b\mod p$.
+    \item Alice and Bob calculate the shared secret\[k_A\;=(g^b)^a\mod p\;=\;g^{ab}\mod p\;=\;{g^a}^b\mod p\;k_B\]
+\end{enumerate}
+
+
+\subsection{ElGamal Encryption}
+
+Alice wants to send a message $m$ to Bob.
+
+For an arbitrary group operation $\oplus$ with inverse $\ominus$:
+
+\begin{enumerate}
+    \item Alice and Bob agree on a publicly known $\alpha$
+    \item Bob chooses random $b$, publishing the \textit{public key} $\beta:=\alpha^b$
+    \item To encrypt $m$, Alice chooses a random $a$ and sends \[(\gamma,\delta)\;:=\;(\alpha^a,m\oplus\beta^a).\]
+    \item Bob decrypts the ciphertext via \[m\;=\;\delta\ominus\beta^a\]
+\end{enumerate}
+
+\subsection{Solving the DLP}
+
+\paragraph{Trivial method} Compute the sequence $a^0,a^1,a^2,\hdots$ until $a^x=b$ has been found. Complexity: $\bigO(n)$, where $n$ is the order of the group.
+
+\subsubsection{Baby-Step-Giant-Step Algorithm}
+
+To solve the DLP on a group of order $n$, let $m:=\lceil\sqrt n\kern2pt\rceil$.
+
+\begin{enumerate}
+    \item Pre-compute the table\[\{(j,\alpha^j)\mid j = 0,\hdots,m-1\}\]
+    \item Compute $\gamma=\alpha^{-m}$
+    \item Iterate over the sequence \[\beta,\beta\gamma,\beta,\gamma^2,\hdots\]
+        until a collision $\beta\gamma^i=\alpha^j$ is found
+    \item Output \[\log_\alpha\beta\;=\;im+j\]
+\end{enumerate}
+
+This algorithm has $\bigO(\sqrt n)$ memory and $\bigO(\sqrt n\cdot l(n))$ time complexity, where $l(n)$ is the lookup complexity into the table, i.e.\ $l(n)=\log n$ for binary search in a sorted array and $l(n)=1$ for a hash table.
+
+\subsubsection{Pollard's $\rho$ Method}
+
+Heuristic, $\bigO(\sqrt n\kern1pt)$ time and $\bigO(1)$ memory complexity.
+
+See~\cite[p.~234]{imc}.
+
+\subsubsection{Pohlig-Hellman Reduction}
+
+If the group order $n$ decomposes into prime factors \[n\;=\;p_1^{e_1}\cdots p_r^{e_r}\]
+with factors $p_i$ and exponents $e_i$, the DLP in that group is reduced to the DLP in the group of order of the larges prime factor $p$ of $n$.
+
+\begin{enumerate}
+    \item TODO
+\end{enumerate}
+
+
+\bibliography{Zusammenfassung}
 
 \end{document}
 
